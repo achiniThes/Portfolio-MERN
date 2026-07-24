@@ -63,7 +63,7 @@ export default function App() {
   }, [])
 
   return (
-    <BrowserRouter basename="/portfolio-website">
+    <BrowserRouter basename="/Portfolio-MERN">
       <div className="cursor"></div>
       <div className="cursor-dot"></div>
       <Navbar />

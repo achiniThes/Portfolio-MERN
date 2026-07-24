@@ -3,5 +3,6 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/portfolio-website/',
+  // GitHub Pages serves this project from the repository path, not the local folder name.
+  base: '/Portfolio-MERN/',
 })
