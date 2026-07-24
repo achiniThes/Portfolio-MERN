@@ -1,20 +1,20 @@
 const certificates = [
   {
-    img: '/portfolio-website/images/Python_for_Beginners_E-Certificate.png',
+    img: `${import.meta.env.BASE_URL}images/Python_for_Beginners_E-Certificate.png`,
     alt: 'Python Certificate',
     title: 'Python for Beginners',
     issuer: 'University of Moratuwa',
     pending: false,
   },
   {
-    img: '/portfolio-website/images/cybersecuritypending.png',
+    img: `${import.meta.env.BASE_URL}images/cybersecuritypending.png`,
     alt: 'Cyber Security Certificate',
     title: 'Certificate in Cyber Security-SLIIT',
     issuer: 'Certificate Pending',
     pending: true,
   },
   {
-    img: '/portfolio-website/images/practical english pending.png',
+    img: `${import.meta.env.BASE_URL}images/practical english pending.png`,
     alt: 'Practical English Certificate',
     title: 'Certificate in Practical English-SLIIT',
     issuer: 'Certificate Pending',

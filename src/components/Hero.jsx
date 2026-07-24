@@ -46,7 +46,7 @@ export default function Hero() {
 
         <a href="#contact" className="btn">Contact Me</a>
         &nbsp;&nbsp;
-        <a href="/portfolio-website/P.A.A.Thesanya CV.pdf" className="btn" download>
+        <a href={`${import.meta.env.BASE_URL}P.A.A.Thesanya CV.pdf`} className="btn" download>
           Download CV
         </a>
 
@@ -64,7 +64,7 @@ export default function Hero() {
       </div>
 
       <div className="hero-image">
-        <img src="/portfolio-website/images/Photograph.jpeg" alt="Profile Photo" />
+        <img src={`${import.meta.env.BASE_URL}images/Photograph.jpeg`} alt="Profile Photo" />
       </div>
     </section>
   )
