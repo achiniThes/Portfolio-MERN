@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -8,26 +9,9 @@ import Projects from './components/Projects'
 import Certificates from './components/Certificates'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import Admin from "./components/Admin"
 
-export default function App() {
-  // Custom cursor
-  useEffect(() => {
-    const cursor = document.querySelector('.cursor')
-    const dot = document.querySelector('.cursor-dot')
-    const onMove = e => {
-      if (cursor) {
-        cursor.style.left = e.clientX + 'px'
-        cursor.style.top = e.clientY + 'px'
-      }
-      if (dot) {
-        dot.style.left = e.clientX + 'px'
-        dot.style.top = e.clientY + 'px'
-      }
-    }
-    document.addEventListener('mousemove', onMove)
-    return () => document.removeEventListener('mousemove', onMove)
-  }, [])
-
+function MainPage() {
   // Scroll reveal for .hidden sections
   useEffect(() => {
     const hiddenEls = document.querySelectorAll('.hidden')
@@ -47,9 +31,6 @@ export default function App() {
 
   return (
     <>
-      <div className="cursor"></div>
-      <div className="cursor-dot"></div>
-      <Navbar />
       <Hero />
       <About />
       <Education />
@@ -59,5 +40,37 @@ export default function App() {
       <Contact />
       <Footer />
     </>
+  )
+}
+
+export default function App() {
+  // Custom cursor 
+  useEffect(() => {
+    const cursor = document.querySelector('.cursor')
+    const dot = document.querySelector('.cursor-dot')
+    const onMove = e => {
+      if (cursor) {
+        cursor.style.left = e.clientX + 'px'
+        cursor.style.top = e.clientY + 'px'
+      }
+      if (dot) {
+        dot.style.left = e.clientX + 'px'
+        dot.style.top = e.clientY + 'px'
+      }
+    }
+    document.addEventListener('mousemove', onMove)
+    return () => document.removeEventListener('mousemove', onMove)
+  }, [])
+
+  return (
+    <BrowserRouter basename="/portfolio-website">
+      <div className="cursor"></div>
+      <div className="cursor-dot"></div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/admin" element={<Admin />} />
+      </Routes>
+    </BrowserRouter>
   )
 }

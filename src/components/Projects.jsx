@@ -1,25 +1,15 @@
-const projects = [
-  {
-    icon: 'fas fa-calendar-alt',
-    title: 'Part-Time Class Session Organizer',
-    desc: 'Desktop application developed using C# to manage student records, schedules and class sessions efficiently.',
-    stack: ['C#', '.NET', 'Windows Form', 'SQL Server'],
-  },
-  {
-    icon: 'fas fa-chart-line',
-    title: 'Sales Management System',
-    desc: 'Desktop application designed to manage products, customers, inventory and sales transactions while generating useful reports for business operations.',
-    stack: ['Java', 'Netbeans', 'SQL'],
-  },
-  {
-    icon: 'fas fa-laptop-code',
-    title: 'Personal Portfolio Website',
-    desc: 'Responsive portfolio website showcasing my skills, projects, education and DevOps implementation with automated deployment using GitHub Actions and GitHub Pages.',
-    stack: ['HTML', 'CSS', 'JavaScript', 'GitHub Actions'],
-  },
-]
+import { useEffect, useState } from "react";
 
 export default function Projects() {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/projects")
+      .then(res => res.json())
+      .then(data => setProjects(data))
+      .catch(err => console.log(err));
+  }, []);
+
   return (
     <section id="projects" className="hidden">
       <div className="section-tag">My Work</div>
@@ -32,21 +22,34 @@ export default function Projects() {
       </p>
 
       <div className="projects-grid">
-        {projects.map((project, i) => (
-          <div className="project-card" key={i}>
+        {projects.map((project) => (
+          <div className="project-card" key={project._id}>
             <div className="project-icon">
-              <i className={project.icon}></i>
+              <i className="fas fa-laptop-code"></i>
             </div>
             <h3 className="project-title">{project.title}</h3>
-            <p className="project-desc">{project.desc}</p>
+            <p className="project-desc">{project.description}</p>
             <div className="project-stack">
-              {project.stack.map((tech, j) => (
-                <span className="p-badge" key={j}>{tech}</span>
-              ))}
+              {project.technologies
+                .split(",")
+                .map((tech, j) => (
+                  <span className="p-badge" key={j}>{tech.trim()}</span>
+                ))}
             </div>
+            {project.githubLink && (
+              
+                <a href={project.githubLink}
+                target="_blank"
+                rel="noreferrer"
+                className="btn"
+                style={{ marginTop: "15px", display: "inline-block" }}
+              >
+                View Project
+              </a>
+            )}
           </div>
         ))}
       </div>
     </section>
-  )
+  );
 }
