@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
+import { projectsEndpoint } from "../api";
 
 export default function Projects() {
   const [projects, setProjects] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/projects")
-      .then(res => res.json())
-      .then(data => setProjects(data))
-      .catch(err => console.log(err));
+    try {
+      fetch(projectsEndpoint())
+        .then((res) => {
+          if (!res.ok) throw new Error("Could not load projects.");
+          return res.json();
+        })
+        .then((data) => setProjects(data))
+        .catch(() => setError("Projects are currently unavailable. Please try again later."));
+    } catch (err) {
+      setError(err.message);
+    }
   }, []);
 
   return (
@@ -50,6 +59,7 @@ export default function Projects() {
           </div>
         ))}
       </div>
+      {error && <p className="section-sub">{error}</p>}
     </section>
   );
 }

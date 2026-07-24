@@ -1,3 +1,16 @@
+# Portfolio website
+
+## Project API configuration
+
+GitHub Pages hosts only the static React site; it cannot run the Express/MongoDB
+backend in `backend/`. Deploy that backend to a public HTTPS host first (for
+example Render, Railway, or Fly.io), then set its API URL as a GitHub Actions
+repository secret named `VITE_API_URL`. Include the `/api` suffix, e.g.
+`https://portfolio-api.example.com/api`.
+
+For local development, copy `.env.example` to `.env.local`. Vite reads
+`VITE_API_URL` at build time.
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { projectsEndpoint } from "../api";
 
 export default function Admin() {
   const [projects, setProjects] = useState([]);
@@ -9,18 +10,24 @@ export default function Admin() {
     githubLink: ""
   });
   const [editingId, setEditingId] = useState(null);
-
-  const API_URL = "http://localhost:5000/api/projects";
+  const [error, setError] = useState("");
 
   const fetchProjects = () => {
-    fetch(API_URL)
-      .then((res) => res.json())
+    fetch(projectsEndpoint())
+      .then((res) => {
+        if (!res.ok) throw new Error("Could not load projects.");
+        return res.json();
+      })
       .then((data) => setProjects(data))
-      .catch((err) => console.log(err));
+      .catch(() => setError("Unable to reach the portfolio API."));
   };
 
   useEffect(() => {
-    fetchProjects();
+    try {
+      fetchProjects();
+    } catch (err) {
+      setError(err.message);
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -30,22 +37,19 @@ export default function Admin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (editingId) {
-      await fetch(`${API_URL}/${editingId}`, {
-        method: "PUT",
+    try {
+      const response = await fetch(projectsEndpoint(editingId || ""), {
+        method: editingId ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form)
       });
-    } else {
-      await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
-      });
-    }
 
-    resetForm();
-    fetchProjects();
+      if (!response.ok) throw new Error("Could not save the project.");
+      resetForm();
+      fetchProjects();
+    } catch (err) {
+      setError(err.message || "Unable to save the project.");
+    }
   };
 
   const handleEdit = (project) => {
@@ -60,8 +64,13 @@ export default function Admin() {
   };
 
   const handleDelete = async (id) => {
-    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-    fetchProjects();
+    try {
+      const response = await fetch(projectsEndpoint(id), { method: "DELETE" });
+      if (!response.ok) throw new Error("Could not delete the project.");
+      fetchProjects();
+    } catch (err) {
+      setError(err.message || "Unable to delete the project.");
+    }
   };
 
   const resetForm = () => {
@@ -78,6 +87,7 @@ export default function Admin() {
       <p className="section-sub">
         Add, update, or remove projects shown on your Projects page.
       </p>
+      {error && <p className="section-sub">{error}</p>}
 
       <form onSubmit={handleSubmit} style={{ maxWidth: "600px", margin: "0 auto 50px" }}>
         <div style={{ marginBottom: "15px" }}>
